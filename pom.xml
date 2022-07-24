@@ -10,7 +10,7 @@
 
     <name>PIT Stryker Dashboard reporter</name>
     <url>https://github.com/mthmulders/pit-stryker-dashboard-reporter</url>
-    <description>A PIT reporter that uploads to the Stryker Dashboard</description>
+    <description>Stryker Dashboard reporter for PIT</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
