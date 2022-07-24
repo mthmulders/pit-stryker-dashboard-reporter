@@ -30,7 +30,7 @@ jobs:
           check-latest: true
 
       - name: SonarCloud Scan
-        run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=mthmulders_pit-stryker-dashboard-reporter
+        run: mvn -Dsonar.login=$SONAR_TOKEN verify sonar:sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
