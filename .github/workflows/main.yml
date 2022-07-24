@@ -1,0 +1,33 @@
+name: CI build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 11
+          distribution: 'adopt'
+          check-latest: true
+
+      - name: Set up cache for ~./m2/repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            pit-stryker-dashboard-reporter
+
+      - name: Build and test code
+        run: mvn verify
