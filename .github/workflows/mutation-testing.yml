@@ -1,0 +1,32 @@
+name: Mutation testing
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  mutationtesting:
+    if: contains(github.event.head_commit.message, 'maven-release-plugin') != true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          # Disabling shallow clone is recommended for improving relevancy of reporting
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3.3.0
+        with:
+          java-version: 11
+          distribution: 'adopt'
+          cache: maven
+
+      - name: Install reporter
+        run: mvn install
+
+      - name: Run Pitest and upload report
+        run: mvn test-compile org.pitest:pitest-maven:mutationCoverage
+        env:
+          API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
