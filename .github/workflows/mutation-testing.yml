@@ -29,4 +29,4 @@ jobs:
       - name: Run Pitest and upload report
         run: mvn -e test-compile org.pitest:pitest-maven:mutationCoverage
         env:
-          API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
+          STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
