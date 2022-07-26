@@ -30,7 +30,13 @@ jobs:
           check-latest: true
 
       - name: SonarCloud Scan
-        run: mvn -Dsonar.login=$SONAR_TOKEN verify sonar:sonar
+        run: |
+          mvn -Dsonar.login=$SONAR_TOKEN \
+            jacoco:prepare-agent \
+            jacoco:prepare-agent-integration \
+            verify sonar:sonar \
+            jacoco:report \
+            jacoco:report-integration
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
