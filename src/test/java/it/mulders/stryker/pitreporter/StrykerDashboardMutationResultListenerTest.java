@@ -1,5 +1,6 @@
 package it.mulders.stryker.pitreporter;
 
+import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClient;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -11,14 +12,21 @@ import org.pitest.classpath.ClassPath;
 import org.pitest.classpath.PathFilter;
 import org.pitest.classpath.ProjectClassPaths;
 import org.pitest.coverage.CoverageData;
+import org.pitest.elements.utils.JsonParser;
 import org.pitest.mutationtest.ClassMutationResults;
+import org.pitest.mutationtest.DetectionStatus;
 import org.pitest.mutationtest.MutationResult;
 import org.pitest.mutationtest.MutationStatusTestPair;
 import org.pitest.mutationtest.engine.Location;
 import org.pitest.mutationtest.engine.MutationDetails;
 import org.pitest.mutationtest.engine.MutationIdentifier;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StrykerDashboardMutationResultListenerTest implements WithAssertions {
@@ -33,17 +41,17 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
             codeSource,
             null
     );
-    private final StrykerDashboardMutationResultListener listener = new StrykerDashboardMutationResultListener(coverage);
-
-    static class Demo {
-        int add(int a, int b) {
-            return a + b;
-        }
-    }
+    private final JsonParser jsonParser = new JsonParser(Collections.emptyList());
+    private final TestableStrykerDashboardClient dashboardClient = new TestableStrykerDashboardClient();
+    private final StrykerDashboardMutationResultListener listener = new StrykerDashboardMutationResultListener(
+            coverage,
+            jsonParser,
+            dashboardClient
+    );
 
     private final MutationDetails mutationDetails = new MutationDetails(
             new MutationIdentifier(
-                    new Location(ClassName.fromClass(Demo.class), "add", "add(int, int)/int"),
+                    new Location(ClassName.fromClass(StrykerDashboardMutationResultListenerTest.class), "nonExisting", "nonExisting()/V"),
                     0,
                     "some-mutation"
             ),
@@ -56,7 +64,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
     @Test
     void should_collect_package_info() {
         // Arrange
-        var mstp = new MutationStatusTestPair(1, null, null, null);
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
         var mutation = new MutationResult(mutationDetails, mstp);
         var cmr = new ClassMutationResults(Collections.singleton(mutation));
 
@@ -73,5 +81,39 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
                                 assertThat(sd.getPackageName()).isEqualTo("it/mulders/stryker/pitreporter");
                             });
         });
+    }
+
+    @Test
+    void should_upload_result() {
+        // Arrange
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
+        var mutation = new MutationResult(mutationDetails, mstp);
+        var cmr = new ClassMutationResults(Collections.singleton(mutation));
+
+        // Act
+        listener.handleMutationResult(cmr);
+        listener.runEnd();
+
+        // Assert
+        assertThat(dashboardClient.uploadedReports)
+                .hasSize(1);
+    }
+
+    class TestableStrykerDashboardClient extends StrykerDashboardClient {
+        final List<String> uploadedReports = new ArrayList<>();
+
+        TestableStrykerDashboardClient() {
+            super(null);
+        }
+
+        @Override
+        public void uploadReport(final InputStream report) {
+            try {
+                var text = new String(report.readAllBytes(), Charset.defaultCharset());
+                uploadedReports.add(text);
+            } catch (IOException ioe) {
+                fail("Can't close report input stream", ioe);
+            }
+        }
     }
 }

@@ -26,13 +26,25 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     private final CoverageDatabase coverage;
     private final JsonParser jsonParser;
     private final PackageSummaryMap packageSummaryData = new PackageSummaryMap();
-    private final StrykerDashboardClient dashboardClient = new StrykerDashboardClient(
-            EnvironmentFactory.findEnvironment()
-    );
+    private final StrykerDashboardClient dashboardClient;
 
     public StrykerDashboardMutationResultListener(final CoverageDatabase coverage, final SourceLocator... locators) {
+        this(
+                coverage,
+                new JsonParser(new HashSet<>(Arrays.asList(locators))),
+                new StrykerDashboardClient(EnvironmentFactory.findEnvironment())
+        );
+    }
+
+    // Visible for testing
+    StrykerDashboardMutationResultListener(
+            final CoverageDatabase coverage,
+            final JsonParser jsonParser,
+            final StrykerDashboardClient dashboardClient
+    ) {
         this.coverage = coverage;
-        this.jsonParser = new JsonParser(new HashSet<>(Arrays.asList(locators)));
+        this.jsonParser = jsonParser;
+        this.dashboardClient = dashboardClient;
     }
 
     // Visible for testing
