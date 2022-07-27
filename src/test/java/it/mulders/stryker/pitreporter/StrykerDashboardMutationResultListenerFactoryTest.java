@@ -4,15 +4,10 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.pitest.coverage.CoverageDatabase;
 import org.pitest.coverage.NoCoverage;
 import org.pitest.mutationtest.ListenerArguments;
 import org.pitest.mutationtest.MutationResultListenerFactory;
-import org.pitest.mutationtest.SourceLocator;
 
-import java.io.Reader;
-import java.util.Collection;
-import java.util.Optional;
 import java.util.Properties;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

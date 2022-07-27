@@ -35,6 +35,11 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         this.jsonParser = new JsonParser(new HashSet<>(Arrays.asList(locators)));
     }
 
+    // Visible for testing
+    PackageSummaryMap getPackageSummaryData() {
+        return packageSummaryData;
+    }
+
     @Override
     public void runStart() {
         // Nothing to do
