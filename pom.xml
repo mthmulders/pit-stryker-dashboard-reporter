@@ -136,9 +136,9 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M7</version>
                     <configuration>
-                        <systemProperties>
+                        <systemPropertyVariables>
                             <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
-                        </systemProperties>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -146,9 +146,9 @@
                     <artifactId>maven-failsafe-plugin</artifactId>
                     <version>3.0.0-M7</version>
                     <configuration>
-                        <systemProperties>
+                        <systemPropertyVariables>
                             <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
-                        </systemProperties>
+                        </systemPropertyVariables>
                     </configuration>
                     <executions>
                         <execution>
