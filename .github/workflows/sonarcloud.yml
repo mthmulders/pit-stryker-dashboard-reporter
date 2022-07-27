@@ -34,9 +34,10 @@ jobs:
           mvn -B -Dsonar.login=$SONAR_TOKEN \
             jacoco:prepare-agent \
             jacoco:prepare-agent-integration \
-            verify sonar:sonar \
+            verify \
             jacoco:report \
-            jacoco:report-integration
+            jacoco:report-integration \
+            sonar:sonar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
