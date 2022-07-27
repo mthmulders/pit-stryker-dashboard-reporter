@@ -70,7 +70,8 @@ public class StrykerDashboardClient {
         } catch (IOException e) {
             log.log(Level.SEVERE, "I/O error when sending the report or receiving the answer", e);
         } catch (InterruptedException e) {
-            log.log(Level.SEVERE, "Sending the report or receiving the answer", e);
+            log.log(Level.SEVERE, "Sending the report or receiving the answer was interrupted", e);
+            Thread.currentThread().interrupt();
         }
     }
 }
