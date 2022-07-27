@@ -30,4 +30,4 @@ jobs:
             pit-stryker-dashboard-reporter
 
       - name: Build and test code
-        run: mvn verify
+        run: mvn -B verify

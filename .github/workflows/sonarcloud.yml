@@ -31,7 +31,7 @@ jobs:
 
       - name: SonarCloud Scan
         run: |
-          mvn -Dsonar.login=$SONAR_TOKEN \
+          mvn -B -Dsonar.login=$SONAR_TOKEN \
             jacoco:prepare-agent \
             jacoco:prepare-agent-integration \
             verify sonar:sonar \
