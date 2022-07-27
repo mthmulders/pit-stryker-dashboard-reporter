@@ -29,6 +29,7 @@ public class StrykerDashboardClient {
         this.hostname = hostname;
     }
 
+    @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
     public void uploadReport(final InputStream report) {
         // PUT ${BASE_URL}/api/reports/${PROJECT}/${VERSION}
         // -H 'Content-Type: application/json' \
@@ -65,7 +66,7 @@ public class StrykerDashboardClient {
                     log.log(Level.SEVERE, "Failed to upload report, please check your dashboard registration!");
                     return;
                 default:
-                    log.log(Level.SEVERE, String.format("Unexpected response status: %d", statusCode));
+                    log.log(Level.SEVERE, () -> String.format("Unexpected response status: %d", statusCode));
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "I/O error when sending the report or receiving the answer", e);
