@@ -35,8 +35,8 @@ If your builds run in another environment, please feel free to [open an issue](h
         </outputFormats>
     </configuration>
     ```
-   Alternatively, if `<configuration>` is already there, add the `<outputFormats>`.
-   Similarly, if `<outputFormats>` is already there, add (or replace) with `<format>stryker-dashboard</format>`.
+   1. Alternatively, if `<configuration>` is already there, add the `<outputFormats>`.
+   2. Similarly, if `<outputFormats>` is already there, add (or replace) with `<format>stryker-dashboard</format>`.
 
 ## License
 This project is licensed under the MIT license.
