@@ -12,6 +12,9 @@ import java.util.logging.Logger;
 public class EnvironmentFactory {
     private static final Logger log = Log.getLogger();
 
+    private EnvironmentFactory() {
+    }
+
     /**
      * Try to find a usable {@link Environment} implementation.
      * @return An implementation of {@link Environment}, guaranteed non-null.
