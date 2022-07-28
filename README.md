@@ -8,11 +8,35 @@
 
 A PIT reporter that publishes your mutation testing results to the [Stryker Mutator Dashboard](https://dashboard.stryker-mutator.io/).
 
-Setup is relatively easy: make sure there is an environment variable `STRYKER_DASHBOARD_API_KEY` with the API key that you got when you set up your project.
-The reporter will auto-configure itself, given you work in any of the following environments:
+## Setup
+Setup is relatively easy:
+1. make sure there is an environment variable `STRYKER_DASHBOARD_API_KEY` with the API key that you got when you set up your project
+
+The reporter will autoconfigure itself, given you work in any of the following environments:
 - GitHub Actions
 
 If your builds run in another environment, please feel free to [open an issue](https://github.com/mthmulders/pit-stryker-dashboard-reporter/issues/new).
+
+## Usage
+1. Find the place in your **pom.xml** where you define the _pitest-maven_ plugin.
+2. Add a dependency to this plugin declaration:
+    ```xml
+    <dependency>
+       <groupId>it.mulders.stryker</groupId>
+       <artifactId>pit-dashbard-reporter</artifactId>
+       <version>0.1-SNAPSHOT</version>
+    </dependency>
+    ```
+3. Configure PIT to use the new output format:
+    ```xml
+    <configuration>
+        <outputFormats>
+            <format>stryker-dashboard</format>
+        </outputFormats>
+    </configuration>
+    ```
+   Alternatively, if `<configuration>` is already there, add the `<outputFormats>`.
+   Similarly, if `<outputFormats>` is already there, add (or replace) with `<format>stryker-dashboard</format>`.
 
 ## License
 This project is licensed under the MIT license.
