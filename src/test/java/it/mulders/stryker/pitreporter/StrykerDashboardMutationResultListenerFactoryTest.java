@@ -46,12 +46,10 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
     void should_specify_module_name_if_supplied() {
         // arrange
         var coverage = new NoCoverage();
-        var data = new ReportOptions();
         var props = new Properties();
         props.put(STRYKER_MODULE_NAME_PROPERTY, "example-1");
-        data.setFreeFormProperties(props);
 
-        var args = new ListenerArguments(null, coverage, null, null, System.currentTimeMillis(), false, data);
+        var args = new ListenerArguments(null, coverage, null, null, System.currentTimeMillis(), false, null);
 
         // act
         var listener = factory.getListener(props, args);
