@@ -4,10 +4,11 @@ import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import it.mulders.stryker.pitreporter.environment.Environment;
 import org.assertj.core.api.WithAssertions;
-import org.junit.jupiter.api.*;
-
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
 import static com.github.tomakehurst.wiremock.client.WireMock.notFound;
@@ -48,17 +49,17 @@ class StrykerDashboardClientIT implements WithAssertions {
 
         @Test
         void should_construct_correct_URL(final WireMockRuntimeInfo wmRuntimeInfo) {
-        // Arrange
-        var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
+            // Arrange
+            var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
-        // Act
-        client.uploadReport("");
+            // Act
+            client.uploadReport("");
 
-        // Assert
-        verify(
-                putRequestedFor(urlEqualTo("/api/reports/test.com/octocat/hello-world/main"))
-        );
-    }
+            // Assert
+            verify(
+                    putRequestedFor(urlEqualTo("/api/reports/test.com/octocat/hello-world/main"))
+            );
+        }
     }
 
     @Nested
