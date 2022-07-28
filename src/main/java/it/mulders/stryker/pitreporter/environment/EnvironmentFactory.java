@@ -29,8 +29,8 @@ public class EnvironmentFactory {
             return new GithubActionsEnvironment();
         }
 
-        log.log(Level.SEVERE, () -> "Could not reliably determine your environment, this reporter will not work correctly.");
-        log.log(Level.SEVERE, () -> "Consider reporting an issue at https://github.com/mthmulders/pit-stryker-dashboard-reporter/issues/new.");
+        log.log(Level.SEVERE, "Could not reliably determine your environment, this reporter will not work correctly.");
+        log.log(Level.SEVERE, "Consider reporting an issue at https://github.com/mthmulders/pit-stryker-dashboard-reporter/issues/new.");
         return new UnknownEnvironment();
     }
 }

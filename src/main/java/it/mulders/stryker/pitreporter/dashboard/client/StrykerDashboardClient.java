@@ -69,7 +69,7 @@ public class StrykerDashboardClient {
                     log.log(Level.SEVERE, "Failed to upload report, please check your dashboard registration!");
                     return;
                 default:
-                    log.log(Level.SEVERE, () -> String.format("Unexpected response status: %d", statusCode));
+                    log.log(Level.SEVERE, "Unexpected response status: {0}", statusCode);
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "I/O error when sending the report or receiving the answer", e);
