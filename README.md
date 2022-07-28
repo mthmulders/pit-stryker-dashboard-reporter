@@ -44,7 +44,12 @@ If your builds run in another environment, please feel free to [open an issue](h
    </pluginConfiguration>
    ```
    This will ensure the mutation testing results of the various Maven modules will not mix up in the report.
+   You **should not** to do this if you have a single-module Maven project!
 
 ## License
 This project is licensed under the MIT license.
 See the [LICENSE](./LICENSE) file for the full text of the license.
+
+## Credits
+Credit where credit is due: this reporter would not exist without the [tremendous work of ](https://github.com/wmaarts/pitest-mutation-testing-elements-plugin) by Wouter Aarts.
+His reporter contains all the complex mapping from PIT results to [mutation-testing-elements' JSON format](https://github.com/stryker-mutator/mutation-testing-elements/tree/master/packages/report-schema).
