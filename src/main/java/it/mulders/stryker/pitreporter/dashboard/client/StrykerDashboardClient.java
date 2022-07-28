@@ -4,7 +4,6 @@ import it.mulders.stryker.pitreporter.environment.Environment;
 import org.pitest.util.Log;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -41,7 +40,7 @@ public class StrykerDashboardClient {
      * @param report The JSON report to upload.
      */
     @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
-    public void uploadReport(final InputStream report) {
+    public void uploadReport(final String report) {
         // PUT ${BASE_URL}/api/reports/${PROJECT}/${VERSION}
         // -H 'Content-Type: application/json' \
         // -H 'Host: dashboard.stryker-mutator.io' \
@@ -52,7 +51,7 @@ public class StrykerDashboardClient {
         var uri = String.format("%s/api/reports/%s/%s",hostname, projectName, projectVersion);
         log.log(Level.INFO, () -> String.format("Uploading report to %s", uri));
 
-        var body = HttpRequest.BodyPublishers.ofInputStream(() -> report);
+        var body = HttpRequest.BodyPublishers.ofString(report);
 
         var request = HttpRequest.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)

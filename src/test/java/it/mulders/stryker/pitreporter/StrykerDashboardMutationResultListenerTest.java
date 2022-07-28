@@ -107,13 +107,8 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
         }
 
         @Override
-        public void uploadReport(final InputStream report) {
-            try {
-                var text = new String(report.readAllBytes(), Charset.defaultCharset());
-                uploadedReports.add(text);
-            } catch (IOException ioe) {
-                fail("Can't close report input stream", ioe);
-            }
+        public void uploadReport(final String report) {
+            uploadedReports.add(report);
         }
     }
 }

@@ -13,7 +13,6 @@ import org.pitest.mutationtest.SourceLocator;
 import org.pitest.util.Log;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -93,19 +92,11 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
      */
     @Override
     public void runEnd() {
-        String json;
         try {
-            json = jsonParser.toJson(this.packageSummaryData);
+            var json = jsonParser.toJson(this.packageSummaryData);
+            dashboardClient.uploadReport(json);
         } catch (IOException ioe) {
             log.log(Level.SEVERE, "Could not convert PIT results to Stryker Dashboard format", ioe);
-            return;
-        }
-
-        try(var reader = new StringReader(json);
-            var stream = new ReaderInputStream(reader)) {
-            dashboardClient.uploadReport(stream);
-        } catch (IOException ioe) {
-            log.log(Level.SEVERE, "Could not close internal input stream", ioe);
         }
     }
 

@@ -37,7 +37,7 @@ class StrykerDashboardClientIT implements WithAssertions {
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
             // Act
-            client.uploadReport(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+            client.uploadReport("");
 
             // Assert
             verify(
@@ -52,7 +52,7 @@ class StrykerDashboardClientIT implements WithAssertions {
         var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
         // Act
-        client.uploadReport(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+        client.uploadReport("");
 
         // Assert
         verify(
@@ -71,7 +71,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(ok().withBody("")));
 
             // Act
-            client.uploadReport(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+            client.uploadReport("");
 
             // Assert
         }
@@ -84,7 +84,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(unauthorized().withBody("")));
 
             // Act
-            client.uploadReport(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+            client.uploadReport("");
 
             // Assert
         }
@@ -97,7 +97,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(notFound().withBody("")));
 
             // Act
-            client.uploadReport(new ByteArrayInputStream("".getBytes(StandardCharsets.UTF_8)));
+            client.uploadReport("");
 
             // Assert
         }
