@@ -26,6 +26,7 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     private static final Logger log = Log.getLogger();
 
     private final CoverageDatabase coverage;
+    private final String moduleName;
     private final JsonParser jsonParser;
     private final PackageSummaryMap packageSummaryData = new PackageSummaryMap();
     private final StrykerDashboardClient dashboardClient;
@@ -35,9 +36,14 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
      * @param coverage A database of coverage.
      * @param locators Zero or more locators for source code.
      */
-    public StrykerDashboardMutationResultListener(final CoverageDatabase coverage, final SourceLocator... locators) {
+    public StrykerDashboardMutationResultListener(
+            final CoverageDatabase coverage,
+            final String moduleName,
+            final SourceLocator... locators)
+    {
         this(
                 coverage,
+                moduleName,
                 new JsonParser(new HashSet<>(Arrays.asList(locators))),
                 new StrykerDashboardClient(EnvironmentFactory.findEnvironment())
         );
@@ -46,10 +52,12 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     // Visible for testing
     StrykerDashboardMutationResultListener(
             final CoverageDatabase coverage,
+            final String moduleName,
             final JsonParser jsonParser,
             final StrykerDashboardClient dashboardClient
     ) {
         this.coverage = coverage;
+        this.moduleName = moduleName;
         this.jsonParser = jsonParser;
         this.dashboardClient = dashboardClient;
     }
@@ -94,7 +102,7 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     public void runEnd() {
         try {
             var json = jsonParser.toJson(this.packageSummaryData);
-            dashboardClient.uploadReport(json);
+            dashboardClient.uploadReport(json, moduleName);
         } catch (IOException ioe) {
             log.log(Level.SEVERE, "Could not convert PIT results to Stryker Dashboard format", ioe);
         }

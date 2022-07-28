@@ -36,20 +36,13 @@ public class StrykerDashboardClient {
     }
 
     /**
-     * Upload a report
+     * Upload a report.
      * @param report The JSON report to upload.
+     * @param moduleName Name of the project module for the report.
      */
-    @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
-    public void uploadReport(final String report) {
-        // PUT ${BASE_URL}/api/reports/${PROJECT}/${VERSION}
-        // -H 'Content-Type: application/json' \
-        // -H 'Host: dashboard.stryker-mutator.io' \
-        // -H "X-Api-Key: ${API_KEY}" \
-        var projectName = environment.getProjectName();
-        var projectVersion = environment.getProjectVersion();
-
-        var uri = String.format("%s/api/reports/%s/%s",hostname, projectName, projectVersion);
-        log.log(Level.INFO, () -> String.format("Uploading report to %s", uri));
+    public void uploadReport(final String report, final String moduleName) {
+        var uri = constructReportUploadUri(moduleName);
+        log.log(Level.INFO, "Uploading report to {0}", uri);
 
         var body = HttpRequest.BodyPublishers.ofString(report);
 
@@ -84,5 +77,20 @@ public class StrykerDashboardClient {
             log.log(Level.SEVERE, "Sending the report or receiving the answer was interrupted", e);
             Thread.currentThread().interrupt();
         }
+    }
+
+    @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
+    private String constructReportUploadUri(final String moduleName) {
+        // PUT ${BASE_URL}/api/reports/${PROJECT}/${VERSION}?module=${MODULE}
+        // -H 'Content-Type: application/json' \
+        // -H 'Host: dashboard.stryker-mutator.io' \
+        // -H "X-Api-Key: ${API_KEY}" \
+        var projectName = environment.getProjectName();
+        var projectVersion = environment.getProjectVersion();
+
+        var uri = String.format("%s/api/reports/%s/%s",hostname, projectName, projectVersion);
+        if (moduleName != null) uri += String.format("?module=%s", moduleName);
+
+        return uri;
     }
 }

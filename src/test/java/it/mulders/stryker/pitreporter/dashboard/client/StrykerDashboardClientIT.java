@@ -38,7 +38,7 @@ class StrykerDashboardClientIT implements WithAssertions {
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
             // Act
-            client.uploadReport("");
+            client.uploadReport("", null);
 
             // Assert
             verify(
@@ -48,16 +48,30 @@ class StrykerDashboardClientIT implements WithAssertions {
         }
 
         @Test
-        void should_construct_correct_URL(final WireMockRuntimeInfo wmRuntimeInfo) {
+        void should_construct_correct_URL_without_module(final WireMockRuntimeInfo wmRuntimeInfo) {
             // Arrange
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
             // Act
-            client.uploadReport("");
+            client.uploadReport("", null);
 
             // Assert
             verify(
                     putRequestedFor(urlEqualTo("/api/reports/test.com/octocat/hello-world/main"))
+            );
+        }
+
+        @Test
+        void should_construct_correct_URL_with_module(final WireMockRuntimeInfo wmRuntimeInfo) {
+            // Arrange
+            var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
+
+            // Act
+            client.uploadReport("", "foo");
+
+            // Assert
+            verify(
+                    putRequestedFor(urlEqualTo("/api/reports/test.com/octocat/hello-world/main?module=foo"))
             );
         }
     }
@@ -72,7 +86,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(ok().withBody("")));
 
             // Act
-            client.uploadReport("");
+            client.uploadReport("", null);
 
             // Assert
         }
@@ -85,7 +99,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(unauthorized().withBody("")));
 
             // Act
-            client.uploadReport("");
+            client.uploadReport("", null);
 
             // Assert
         }
@@ -98,7 +112,7 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(notFound().withBody("")));
 
             // Act
-            client.uploadReport("");
+            client.uploadReport("", null);
 
             // Assert
         }

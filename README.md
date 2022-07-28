@@ -37,6 +37,13 @@ If your builds run in another environment, please feel free to [open an issue](h
     ```
    1. Alternatively, if `<configuration>` is already there, add the `<outputFormats>`.
    2. Similarly, if `<outputFormats>` is already there, add (or replace) with `<format>stryker-dashboard</format>`.
+4. **Important** If you are working in a multi-module Maven project, add the following to the `<configuration>` block:
+   ```xml
+   <pluginConfiguration>
+       <stryker.moduleName>${project.artifactId}</stryker.moduleName>
+   </pluginConfiguration>
+   ```
+   This will ensure the mutation testing results of the various Maven modules will not mix up in the report.
 
 ## License
 This project is licensed under the MIT license.

@@ -21,9 +21,6 @@ import org.pitest.mutationtest.engine.Location;
 import org.pitest.mutationtest.engine.MutationDetails;
 import org.pitest.mutationtest.engine.MutationIdentifier;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +42,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
     private final TestableStrykerDashboardClient dashboardClient = new TestableStrykerDashboardClient();
     private final StrykerDashboardMutationResultListener listener = new StrykerDashboardMutationResultListener(
             coverage,
+            null,
             jsonParser,
             dashboardClient
     );
@@ -96,19 +94,32 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
 
         // Assert
         assertThat(dashboardClient.uploadedReports)
-                .hasSize(1);
+                .hasSize(1)
+                .allSatisfy(report -> {
+                    assertThat(report.moduleName).isNull();
+                });
     }
 
-    class TestableStrykerDashboardClient extends StrykerDashboardClient {
-        final List<String> uploadedReports = new ArrayList<>();
+    static class TestableStrykerDashboardClient extends StrykerDashboardClient {
+        final List<Report> uploadedReports = new ArrayList<>();
 
         TestableStrykerDashboardClient() {
             super(null);
         }
 
         @Override
-        public void uploadReport(final String report) {
-            uploadedReports.add(report);
+        public void uploadReport(final String report, final String moduleName) {
+            uploadedReports.add(new Report(moduleName, report));
+        }
+    }
+
+    static class Report {
+        final String moduleName;
+        final String content;
+
+        public Report(final String moduleName, final String content) {
+            this.moduleName = moduleName;
+            this.content = content;
         }
     }
 }
