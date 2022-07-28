@@ -12,6 +12,9 @@ import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Client for uploading mutation testing reports to the Stryker Dashboard.
+ */
 public class StrykerDashboardClient {
     private static final Logger log = Log.getLogger();
 
@@ -19,6 +22,10 @@ public class StrykerDashboardClient {
     private final Environment environment;
     private final String hostname;
 
+    /**
+     * Constructor.
+     * @param environment How to obtain information about the project from the environment.
+     */
     public StrykerDashboardClient(final Environment environment) {
         this(environment, "https://dashboard.stryker-mutator.io");
     }
@@ -29,6 +36,10 @@ public class StrykerDashboardClient {
         this.hostname = hostname;
     }
 
+    /**
+     * Upload a report
+     * @param report The JSON report to upload.
+     */
     @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
     public void uploadReport(final InputStream report) {
         // PUT ${BASE_URL}/api/reports/${PROJECT}/${VERSION}

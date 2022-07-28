@@ -3,11 +3,15 @@ package it.mulders.stryker.pitreporter.environment;
 import java.util.Map;
 
 /**
+ * Implementation of {@link Environment} that resolves all information from GitHub-provided environment variables.
  * Reference: <a href="https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables">Default environment variables</a>.
  */
 public class GithubActionsEnvironment implements Environment {
     private final Map<String, String> environment;
 
+    /**
+     * Default constructor.
+     */
     public GithubActionsEnvironment() {
         this(System.getenv());
     }

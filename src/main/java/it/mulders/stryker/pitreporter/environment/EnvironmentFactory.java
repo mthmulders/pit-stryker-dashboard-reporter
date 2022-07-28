@@ -6,9 +6,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Helper class to find a usable {@link Environment} implementation.
+ */
 public class EnvironmentFactory {
     private static final Logger log = Log.getLogger();
 
+    /**
+     * Try to find a usable {@link Environment} implementation.
+     * @return An implementation of {@link Environment}, guaranteed non-null.
+     */
     public static Environment findEnvironment() {
         return findEnvironment(System.getenv());
     }

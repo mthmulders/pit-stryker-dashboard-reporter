@@ -1,5 +1,8 @@
 package it.mulders.stryker.pitreporter.environment;
 
+/**
+ * Fallback-implementation of {@link Environment} that definitely does not produce useful information.
+ */
 public class UnknownEnvironment implements Environment {
     private static final String UNKNOWN = "--unknown--";
 

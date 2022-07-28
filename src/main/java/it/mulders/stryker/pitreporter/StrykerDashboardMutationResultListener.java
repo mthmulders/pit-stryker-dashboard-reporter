@@ -20,6 +20,9 @@ import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Listener for {@link ClassMutationResults mutation results} emitted by PIT.
+ */
 public class StrykerDashboardMutationResultListener implements MutationResultListener {
     private static final Logger log = Log.getLogger();
 
@@ -28,6 +31,11 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     private final PackageSummaryMap packageSummaryData = new PackageSummaryMap();
     private final StrykerDashboardClient dashboardClient;
 
+    /**
+     * Construct a new listener instance.
+     * @param coverage A database of coverage.
+     * @param locators Zero or more locators for source code.
+     */
     public StrykerDashboardMutationResultListener(final CoverageDatabase coverage, final SourceLocator... locators) {
         this(
                 coverage,
@@ -52,6 +60,9 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         return packageSummaryData;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void runStart() {
         // Nothing to do
@@ -68,12 +79,18 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void handleMutationResult(final ClassMutationResults metaData) {
         var packageName = metaData.getPackageName();
         this.packageSummaryData.update(packageName, createSummaryData(this.coverage, metaData));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void runEnd() {
         String json;
