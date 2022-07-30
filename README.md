@@ -23,7 +23,7 @@ If your builds run in another environment, please feel free to [open an issue](h
     ```xml
     <dependency>
        <groupId>it.mulders.stryker</groupId>
-       <artifactId>pit-dashbard-reporter</artifactId>
+       <artifactId>pit-dashboard-reporter</artifactId>
        <version>0.1-SNAPSHOT</version>
     </dependency>
     ```
