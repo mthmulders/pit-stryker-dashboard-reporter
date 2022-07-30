@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.mulders.stryker</groupId>
-    <artifactId>pit-dashbard-reporter</artifactId>
+    <artifactId>pit-dashboard-reporter</artifactId>
     <version>0.1.2-SNAPSHOT</version>
 
     <name>PIT Stryker Dashboard reporter</name>
