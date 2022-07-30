@@ -25,7 +25,7 @@ If your builds run in another environment, please feel free to [open an issue](h
     <dependency>
        <groupId>it.mulders.stryker</groupId>
        <artifactId>pit-dashboard-reporter</artifactId>
-       <version>0.1.1</version>
+       <version>0.1.2</version>
     </dependency>
     ```
 3. Configure PIT to use the new output format:
