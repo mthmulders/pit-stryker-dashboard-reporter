@@ -18,7 +18,7 @@ The reporter will autoconfigure itself, given you work in any of the following e
 
 If your builds run in another environment, please feel free to [open an issue](https://github.com/mthmulders/pit-stryker-dashboard-reporter/issues/new).
 
-## Usage
+## Usage (Maven)
 1. Find the place in your **pom.xml** where you define the _pitest-maven_ plugin.
 2. Add a dependency to this plugin declaration:
     ```xml
@@ -46,6 +46,36 @@ If your builds run in another environment, please feel free to [open an issue](h
    ```
    This will ensure the mutation testing results of the various Maven modules will not mix up in the report.
    You **should not** do this if you have a single-module Maven project!
+
+## Usage (Gradle)
+1. Find the place in your **build.gradle** where you declare your dependencies.
+2. Add a dependency to this plugin declaration:
+    ```groovy
+   pitest it.mulders.stryker:pit-dashboard-reporter:0.1.2
+    ```
+3. Configure PIT to use the new output format:
+    ```groovy
+   apply plugin: 'info.solidsoft.pitest'
+   
+   pitest {
+       outputFormats = ['stryker-dashboard']
+   }
+    ``` 
+   1. Alternatively, if `pitest` is already there, add the  `outputFormats` line
+   2. Similarly, if `outputFormats` is already there, append the existing array.
+4. **Important** If you are working on a multi-module Gradle project, add the following to the `pitest` block **for each subproject**:
+   Make sure to do this **inside** a `subprojects` block, like so:
+   ```groovy
+   subprojects {
+     // apply plugin: 'info.solidsoft.pitest'
+
+     pluginManager.withPlugin('info.solidsoft.pitest') {
+       pluginConfiguration = [ "stryker.moduleName": project.name ]
+     }
+   }
+   ```
+   This will ensure the mutation testing results of the various Gradle modules will not mix up in the report.
+   You **should not** do this if you have a single-module Gradle project!
 
 ## License
 This project is licensed under the MIT license.
