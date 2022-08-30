@@ -222,7 +222,7 @@
                         </dependency>
                         <dependency>
                             <groupId>it.mulders.stryker</groupId>
-                            <artifactId>pit-dashbard-reporter</artifactId>
+                            <artifactId>pit-dashboard-reporter</artifactId>
                             <version>${project.version}</version>
                         </dependency>
                     </dependencies>
