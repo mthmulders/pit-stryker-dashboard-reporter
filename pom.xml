@@ -22,7 +22,7 @@
         <jackson-jr.version>2.13.3</jackson-jr.version>
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
         <pitest.version>1.9.3</pitest.version>
-        <wiremock.version>2.33.2</wiremock.version>
+        <wiremock.version>2.34.0</wiremock.version>
     </properties>
 
     <distributionManagement>
