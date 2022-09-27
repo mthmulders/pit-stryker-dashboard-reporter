@@ -23,7 +23,7 @@ jobs:
           key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3.5.1
         with:
           java-version: 11
           distribution: 'adopt'
