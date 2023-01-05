@@ -3,7 +3,7 @@ package it.mulders.stryker.pitreporter;
 import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClient;
 import it.mulders.stryker.pitreporter.environment.EnvironmentFactory;
 
-import org.pitest.coverage.CoverageDatabase;
+import org.pitest.classpath.CodeSource;
 import org.pitest.elements.models.MutationTestSummaryData;
 import org.pitest.elements.models.PackageSummaryMap;
 import org.pitest.elements.utils.JsonParser;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 public class StrykerDashboardMutationResultListener implements MutationResultListener {
     private static final Logger log = Log.getLogger();
 
-    private final CoverageDatabase coverage;
+    private final CodeSource codeSource;
     private final String moduleName;
     private final JsonParser jsonParser;
     private final PackageSummaryMap packageSummaryData = new PackageSummaryMap();
@@ -33,16 +33,17 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
 
     /**
      * Construct a new listener instance.
-     * @param coverage A database of coverage.
+     * @param codeSource Information about the source code on which PIT was executed.
+     * @param moduleName The name of the module on which PIT was executed.
      * @param locators Zero or more locators for source code.
      */
     public StrykerDashboardMutationResultListener(
-            final CoverageDatabase coverage,
+            final CodeSource codeSource,
             final String moduleName,
             final SourceLocator... locators)
     {
         this(
-                coverage,
+                codeSource,
                 moduleName,
                 new JsonParser(new HashSet<>(Arrays.asList(locators))),
                 new StrykerDashboardClient(EnvironmentFactory.findEnvironment())
@@ -51,12 +52,12 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
 
     // Visible for testing
     StrykerDashboardMutationResultListener(
-            final CoverageDatabase coverage,
+            final CodeSource codeSource,
             final String moduleName,
             final JsonParser jsonParser,
             final StrykerDashboardClient dashboardClient
     ) {
-        this.coverage = coverage;
+        this.codeSource = codeSource;
         this.moduleName = moduleName;
         this.jsonParser = jsonParser;
         this.dashboardClient = dashboardClient;
@@ -75,15 +76,13 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         // Nothing to do
     }
 
-    private MutationTestSummaryData createSummaryData(
-            final CoverageDatabase coverage,
-            final ClassMutationResults data
-    ) {
-        return new MutationTestSummaryData(
-                data.getFileName(),
-                data.getMutations(),
-                coverage.getClassInfo(Collections.singleton(data.getMutatedClass()))
-        );
+    private MutationTestSummaryData createSummaryData(final ClassMutationResults classMutationResults) {
+        var fileName = classMutationResults.getFileName();
+        var mutations = classMutationResults.getMutations();
+        var className = classMutationResults.getMutatedClass();
+        var classInfo = codeSource.getClassInfo(Collections.singleton(className));
+
+        return new MutationTestSummaryData(fileName, mutations, classInfo);
     }
 
     /**
@@ -92,7 +91,7 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
     @Override
     public void handleMutationResult(final ClassMutationResults metaData) {
         var packageName = metaData.getPackageName();
-        this.packageSummaryData.update(packageName, createSummaryData(this.coverage, metaData));
+        this.packageSummaryData.update(packageName, createSummaryData(metaData));
     }
 
     /**

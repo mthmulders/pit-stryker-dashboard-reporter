@@ -4,14 +4,17 @@ import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.pitest.coverage.NoCoverage;
+import org.pitest.classinfo.ClassName;
+import org.pitest.classpath.CodeSource;
 import org.pitest.mutationtest.ListenerArguments;
 import org.pitest.mutationtest.MutationResultListenerFactory;
 import org.pitest.mutationtest.config.ReportOptions;
 
+import java.util.Collections;
 import java.util.Properties;
 
 import static it.mulders.stryker.pitreporter.StrykerDashboardMutationResultListenerFactory.STRYKER_MODULE_NAME_PROPERTY;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertions {
@@ -30,26 +33,25 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
     @Test
     void should_create_listener() {
         // arrange
-        var coverage = new NoCoverage();
-        var args = new ListenerArguments(null, coverage, null, null, System.currentTimeMillis(), false, null);
+        var reportOptions = new ReportOptions();
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
 
         // act
         var listener = factory.getListener(new Properties(), args);
 
         // assert
         assertThat(listener).isInstanceOf(StrykerDashboardMutationResultListener.class)
-                .hasFieldOrPropertyWithValue("coverage", coverage)
                 .hasFieldOrPropertyWithValue("moduleName", null);
     }
 
     @Test
     void should_specify_module_name_if_supplied() {
         // arrange
-        var coverage = new NoCoverage();
         var props = new Properties();
         props.put(STRYKER_MODULE_NAME_PROPERTY, "example-1");
+        var reportOptions = new ReportOptions();
 
-        var args = new ListenerArguments(null, coverage, null, null, System.currentTimeMillis(), false, null);
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
 
         // act
         var listener = factory.getListener(props, args);
@@ -57,5 +59,29 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
         // assert
         assertThat(listener).isInstanceOf(StrykerDashboardMutationResultListener.class)
                 .hasFieldOrPropertyWithValue("moduleName", "example-1");
+    }
+
+    @Test
+    void should_have_code_source() {
+        // arrange
+        var props = new Properties();
+        var reportOptions = new ReportOptions();
+
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
+
+        // act
+        var listener = factory.getListener(props, args);
+
+        // assert
+        assertThat(listener).isInstanceOf(StrykerDashboardMutationResultListener.class)
+                .extracting("codeSource")
+                .asInstanceOf(type(CodeSource.class))
+                .satisfies(codeSource -> {
+                    assertThat(codeSource.getClassPath()).isNotNull();
+                    var ownClassName = ClassName.fromClass(getClass());
+                    assertThat(codeSource.getClassInfo(Collections.singleton(ownClassName)))
+                            .isNotNull()
+                            .isNotEmpty();
+                });
     }
 }

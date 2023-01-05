@@ -11,7 +11,6 @@ import org.pitest.classpath.ClassFilter;
 import org.pitest.classpath.ClassPath;
 import org.pitest.classpath.PathFilter;
 import org.pitest.classpath.ProjectClassPaths;
-import org.pitest.coverage.CoverageData;
 import org.pitest.elements.utils.JsonParser;
 import org.pitest.mutationtest.ClassMutationResults;
 import org.pitest.mutationtest.DetectionStatus;
@@ -34,14 +33,10 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
                     new PathFilter(x -> true, x -> true)
             )
     );
-    private final CoverageData coverage = new CoverageData(
-            codeSource,
-            null
-    );
     private final JsonParser jsonParser = new JsonParser(Collections.emptyList());
     private final TestableStrykerDashboardClient dashboardClient = new TestableStrykerDashboardClient();
     private final StrykerDashboardMutationResultListener listener = new StrykerDashboardMutationResultListener(
-            coverage,
+            codeSource,
             null,
             jsonParser,
             dashboardClient
