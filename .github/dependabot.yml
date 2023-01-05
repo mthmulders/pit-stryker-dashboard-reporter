@@ -12,3 +12,5 @@ updates:
     interval: daily
     time: "04:00"
   open-pull-requests-limit: 10
+  ignore:
+    - dependency-name: "org.pitest:pitest-entry"
