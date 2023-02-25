@@ -46,11 +46,12 @@ public class StrykerDashboardClient {
         log.log(Level.INFO, "Uploading report to {0}", uri);
 
         var apiKey = environment.getApiKey();
-        if (log.isLoggable(Level.CONFIG)) {
-            log.log(Level.CONFIG, "Using API key {0}{1}", new Object[] {
-                    StringUtil.repeat('*', apiKey.length() - 3),
-                    apiKey.substring(apiKey.length() - 3)
-            });
+        if (StringUtil.isNullOrEmpty(apiKey)) {
+            log.log(Level.WARNING, "No API key configured!");
+        } else if (log.isLoggable(Level.CONFIG)) {
+            var maskedApiKey = StringUtil.repeat('*', 7)
+                    + (apiKey.length() > 3 ? apiKey.substring(apiKey.length() - 3) : "***");
+            log.log(Level.CONFIG, "Using API key {0}", maskedApiKey);
         }
 
         var body = HttpRequest.BodyPublishers.ofString(report);
