@@ -73,15 +73,15 @@ public class StrykerDashboardClient {
                     return;
                 case 401:
                     log.log(Level.SEVERE, "Failed to upload report, please check your API key!");
-                    log.log(Level.FINE, "API returned {0}", response.body());
+                    logResponseBody(response);
                     throw new StrykerDashboardClientException("Please check your API key!");
                 case 404:
                     log.log(Level.SEVERE, "Failed to upload report, please check your dashboard registration!");
-                    log.log(Level.FINE, "API returned {0}", response.body());
+                    logResponseBody(response);
                     throw new StrykerDashboardClientException("Please check your dashboard registration!");
                 default:
                     log.log(Level.SEVERE, "Unexpected response status: {0}", statusCode);
-                    log.log(Level.SEVERE, "API returned {0}", response.body());
+                    logResponseBody(response);
                     throw new StrykerDashboardClientException("Unknown error, please check the logs with --verbose before raising an issue");
             }
         } catch (IOException e) {
@@ -90,6 +90,10 @@ public class StrykerDashboardClient {
             log.log(Level.SEVERE, "Sending the report or receiving the answer was interrupted", e);
             Thread.currentThread().interrupt();
         }
+    }
+
+    private void logResponseBody(HttpResponse<String> response) {
+        log.log(Level.FINE, "API returned {0}", response.body());
     }
 
     @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code
