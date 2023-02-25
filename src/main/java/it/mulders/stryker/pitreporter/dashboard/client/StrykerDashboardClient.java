@@ -2,6 +2,7 @@ package it.mulders.stryker.pitreporter.dashboard.client;
 
 import it.mulders.stryker.pitreporter.environment.Environment;
 import org.pitest.util.Log;
+import org.pitest.util.StringUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -40,16 +41,24 @@ public class StrykerDashboardClient {
      * @param report The JSON report to upload.
      * @param moduleName Name of the project module for the report.
      */
-    public void uploadReport(final String report, final String moduleName) {
+    public void uploadReport(final String report, final String moduleName) throws StrykerDashboardClientException {
         var uri = constructReportUploadUri(moduleName);
         log.log(Level.INFO, "Uploading report to {0}", uri);
+
+        var apiKey = environment.getApiKey();
+        if (log.isLoggable(Level.CONFIG)) {
+            log.log(Level.CONFIG, "Using API key {0}{1}", new Object[] {
+                    StringUtil.repeat('*', apiKey.length() - 3),
+                    apiKey.substring(apiKey.length() - 3)
+            });
+        }
 
         var body = HttpRequest.BodyPublishers.ofString(report);
 
         var request = HttpRequest.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .header("Content-Type", "application/json")
-                .header("X-Api-Key", environment.getApiKey())
+                .header("X-Api-Key", apiKey)
                 .uri(URI.create(uri))
                 .PUT(body)
                 .build();
@@ -60,16 +69,20 @@ public class StrykerDashboardClient {
 
             switch (statusCode) {
                 case 200:
-                    log.log(Level.FINE, "Successfully uploaded report");
+                    log.log(Level.INFO, "Successfully uploaded report");
                     return;
                 case 401:
                     log.log(Level.SEVERE, "Failed to upload report, please check your API key!");
-                    return;
+                    logResponseBody(response);
+                    throw new StrykerDashboardClientException("Please check your API key!");
                 case 404:
                     log.log(Level.SEVERE, "Failed to upload report, please check your dashboard registration!");
-                    return;
+                    logResponseBody(response);
+                    throw new StrykerDashboardClientException("Please check your dashboard registration!");
                 default:
                     log.log(Level.SEVERE, "Unexpected response status: {0}", statusCode);
+                    logResponseBody(response);
+                    throw new StrykerDashboardClientException("Unknown error, please check the logs with --verbose before raising an issue");
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "I/O error when sending the report or receiving the answer", e);
@@ -77,6 +90,10 @@ public class StrykerDashboardClient {
             log.log(Level.SEVERE, "Sending the report or receiving the answer was interrupted", e);
             Thread.currentThread().interrupt();
         }
+    }
+
+    private void logResponseBody(HttpResponse<String> response) {
+        log.log(Level.FINE, "API returned {0}", response.body());
     }
 
     @SuppressWarnings("java:S125") // The inline comment with HTTP request is not code

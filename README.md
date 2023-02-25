@@ -18,6 +18,10 @@ The reporter will autoconfigure itself, given you work in any of the following e
 
 If your builds run in another environment, please feel free to [open an issue](https://github.com/mthmulders/pit-stryker-dashboard-reporter/issues/new).
 
+When uploading the report fails, this reporter will make the whole build fail.
+If this happens and you want to open an issue, please make sure to run again with the `verbose` switch for PIT.
+Note that this will also log the last three characters of your Stryker Dashboard API key.
+
 ## Usage (Maven)
 1. Find the place in your **pom.xml** where you define the _pitest-maven_ plugin.
 2. Add a dependency to this plugin declaration:

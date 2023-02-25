@@ -3,6 +3,8 @@ name: Mutation testing
 on:
   push:
     branches: [ main ]
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   mutationtesting:
@@ -27,6 +29,6 @@ jobs:
         run: mvn -B --no-transfer-progress install
 
       - name: Run Pitest and upload report
-        run: mvn -B -e --no-transfer-progress test-compile org.pitest:pitest-maven:mutationCoverage
+        run: mvn -B -e --no-transfer-progress test-compile org.pitest:pitest-maven:mutationCoverage -Dverbose
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}

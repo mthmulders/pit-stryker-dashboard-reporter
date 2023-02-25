@@ -1,5 +1,6 @@
 package it.mulders.stryker.pitreporter;
 
+import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClientException;
 import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClient;
 import it.mulders.stryker.pitreporter.environment.EnvironmentFactory;
 
@@ -11,6 +12,7 @@ import org.pitest.mutationtest.ClassMutationResults;
 import org.pitest.mutationtest.MutationResultListener;
 import org.pitest.mutationtest.SourceLocator;
 import org.pitest.util.Log;
+import org.pitest.util.PitError;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -102,6 +104,8 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         try {
             var json = jsonParser.toJson(this.packageSummaryData);
             dashboardClient.uploadReport(json, moduleName);
+        } catch (StrykerDashboardClientException ce) {
+            throw new PitError("Failed to upload report", ce);
         } catch (IOException ioe) {
             log.log(Level.SEVERE, "Could not convert PIT results to Stryker Dashboard format", ioe);
         }
