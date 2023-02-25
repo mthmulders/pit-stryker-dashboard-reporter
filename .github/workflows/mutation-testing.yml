@@ -24,9 +24,9 @@ jobs:
           cache: maven
 
       - name: Install reporter
-        run: mvn -B install
+        run: mvn -B --no-transfer-progress install
 
       - name: Run Pitest and upload report
-        run: mvn -B -e test-compile org.pitest:pitest-maven:mutationCoverage
+        run: mvn -B -e --no-transfer-progress test-compile org.pitest:pitest-maven:mutationCoverage
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}

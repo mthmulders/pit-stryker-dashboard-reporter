@@ -30,4 +30,4 @@ jobs:
             pit-stryker-dashboard-reporter
 
       - name: Build and test code
-        run: mvn -B verify
+        run: mvn -B verify --no-transfer-progress
