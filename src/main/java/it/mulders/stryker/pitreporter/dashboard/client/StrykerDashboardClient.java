@@ -2,6 +2,7 @@ package it.mulders.stryker.pitreporter.dashboard.client;
 
 import it.mulders.stryker.pitreporter.environment.Environment;
 import org.pitest.util.Log;
+import org.pitest.util.StringUtil;
 
 import java.io.IOException;
 import java.net.URI;
@@ -44,12 +45,20 @@ public class StrykerDashboardClient {
         var uri = constructReportUploadUri(moduleName);
         log.log(Level.INFO, "Uploading report to {0}", uri);
 
+        var apiKey = environment.getApiKey();
+        if (log.isLoggable(Level.CONFIG)) {
+            log.log(Level.CONFIG, "Using API key {0}{1}", new Object[] {
+                    StringUtil.repeat('*', apiKey.length() - 3),
+                    apiKey.substring(apiKey.length() - 3)
+            });
+        }
+
         var body = HttpRequest.BodyPublishers.ofString(report);
 
         var request = HttpRequest.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .header("Content-Type", "application/json")
-                .header("X-Api-Key", environment.getApiKey())
+                .header("X-Api-Key", apiKey)
                 .uri(URI.create(uri))
                 .PUT(body)
                 .build();
