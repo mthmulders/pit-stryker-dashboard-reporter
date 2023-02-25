@@ -1,6 +1,7 @@
 package it.mulders.stryker.pitreporter;
 
 import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClient;
+import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClientException;
 import org.assertj.core.api.WithAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -19,6 +20,7 @@ import org.pitest.mutationtest.MutationStatusTestPair;
 import org.pitest.mutationtest.engine.Location;
 import org.pitest.mutationtest.engine.MutationDetails;
 import org.pitest.mutationtest.engine.MutationIdentifier;
+import org.pitest.util.PitError;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,6 +95,35 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
                 .allSatisfy(report -> {
                     assertThat(report.moduleName).isNull();
                 });
+    }
+
+    @Test
+    void should_fail_when_upload_fails() {
+        // Arrange
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
+        var mutation = new MutationResult(mutationDetails, mstp);
+        var cmr = new ClassMutationResults(Collections.singleton(mutation));
+        var error = "Oh noes, an error";
+        var listener = new StrykerDashboardMutationResultListener(
+                codeSource,
+                null,
+                jsonParser,
+                new StrykerDashboardClient(null) {
+                    @Override
+                    public void uploadReport(String report, String moduleName) throws StrykerDashboardClientException {
+                        throw new StrykerDashboardClientException(error);
+                    }
+                }
+        );
+
+        // Act
+        listener.handleMutationResult(cmr);
+
+        // Assert
+        assertThatThrownBy(() -> listener.runEnd())
+                .isInstanceOf(PitError.class)
+                .cause()
+                .hasMessageContaining(error);
     }
 
     static class TestableStrykerDashboardClient extends StrykerDashboardClient {
