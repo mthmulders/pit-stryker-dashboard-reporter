@@ -41,7 +41,7 @@ public class StrykerDashboardClient {
      * @param report The JSON report to upload.
      * @param moduleName Name of the project module for the report.
      */
-    public void uploadReport(final String report, final String moduleName) {
+    public void uploadReport(final String report, final String moduleName) throws StrykerDashboardClientException {
         var uri = constructReportUploadUri(moduleName);
         log.log(Level.INFO, "Uploading report to {0}", uri);
 
@@ -69,16 +69,20 @@ public class StrykerDashboardClient {
 
             switch (statusCode) {
                 case 200:
-                    log.log(Level.FINE, "Successfully uploaded report");
+                    log.log(Level.INFO, "Successfully uploaded report");
                     return;
                 case 401:
                     log.log(Level.SEVERE, "Failed to upload report, please check your API key!");
-                    return;
+                    log.log(Level.FINE, "API returned {0}", response.body());
+                    throw new StrykerDashboardClientException("Please check your API key!");
                 case 404:
                     log.log(Level.SEVERE, "Failed to upload report, please check your dashboard registration!");
-                    return;
+                    log.log(Level.FINE, "API returned {0}", response.body());
+                    throw new StrykerDashboardClientException("Please check your dashboard registration!");
                 default:
                     log.log(Level.SEVERE, "Unexpected response status: {0}", statusCode);
+                    log.log(Level.SEVERE, "API returned {0}", response.body());
+                    throw new StrykerDashboardClientException("Unknown error, please check the logs with --verbose before raising an issue");
             }
         } catch (IOException e) {
             log.log(Level.SEVERE, "I/O error when sending the report or receiving the answer", e);

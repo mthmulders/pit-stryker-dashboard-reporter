@@ -33,7 +33,7 @@ class StrykerDashboardClientIT implements WithAssertions {
         }
 
         @Test
-        void should_include_API_key(final WireMockRuntimeInfo wmRuntimeInfo) {
+        void should_include_API_key(final WireMockRuntimeInfo wmRuntimeInfo) throws StrykerDashboardClientException {
             // Arrange
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
@@ -48,7 +48,7 @@ class StrykerDashboardClientIT implements WithAssertions {
         }
 
         @Test
-        void should_construct_correct_URL_without_module(final WireMockRuntimeInfo wmRuntimeInfo) {
+        void should_construct_correct_URL_without_module(final WireMockRuntimeInfo wmRuntimeInfo) throws StrykerDashboardClientException {
             // Arrange
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
 
@@ -62,9 +62,11 @@ class StrykerDashboardClientIT implements WithAssertions {
         }
 
         @Test
-        void should_construct_correct_URL_with_module(final WireMockRuntimeInfo wmRuntimeInfo) {
+        void should_construct_correct_URL_with_module(final WireMockRuntimeInfo wmRuntimeInfo) throws StrykerDashboardClientException {
             // Arrange
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
+            stubFor(put("/api/reports/test.com/octocat/hello-world/main?module=foo")
+                    .willReturn(ok().withBody("")));
 
             // Act
             client.uploadReport("", "foo");
@@ -79,7 +81,7 @@ class StrykerDashboardClientIT implements WithAssertions {
     @Nested
     class ResponseHandlingIT {
         @Test
-        void should_handle_200_response(final WireMockRuntimeInfo wmRuntimeInfo) {
+        void should_handle_200_response(final WireMockRuntimeInfo wmRuntimeInfo) throws StrykerDashboardClientException {
             // Arrange
             var client = new StrykerDashboardClient(new TestEnvironment(), wmRuntimeInfo.getHttpBaseUrl());
             stubFor(put("/api/reports/test.com/octocat/hello-world/main")
@@ -99,7 +101,9 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(unauthorized().withBody("")));
 
             // Act
-            client.uploadReport("", null);
+            assertThatThrownBy(() -> client.uploadReport("", null))
+                    .isInstanceOf(StrykerDashboardClientException.class)
+                    .hasMessageContaining("API key");
 
             // Assert
         }
@@ -112,7 +116,9 @@ class StrykerDashboardClientIT implements WithAssertions {
                     .willReturn(notFound().withBody("")));
 
             // Act
-            client.uploadReport("", null);
+            assertThatThrownBy(() -> client.uploadReport("", null))
+                    .isInstanceOf(StrykerDashboardClientException.class)
+                    .hasMessageContaining("dashboard registration");
 
             // Assert
         }
