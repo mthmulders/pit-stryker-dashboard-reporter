@@ -40,6 +40,7 @@ public class StrykerDashboardClient {
      * Upload a report.
      * @param report The JSON report to upload.
      * @param moduleName Name of the project module for the report.
+     * @throws StrykerDashboardClientException When there is insufficient or incorrect configuration for uploading to the Stryker dashboard.
      */
     public void uploadReport(final String report, final String moduleName) throws StrykerDashboardClientException {
         var uri = constructReportUploadUri(moduleName);
