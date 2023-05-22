@@ -4,7 +4,7 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.pitest.classpath.CodeSource;
+import org.pitest.classpath.DefaultCodeSource;
 import org.pitest.mutationtest.ListenerArguments;
 import org.pitest.mutationtest.MutationResultListener;
 import org.pitest.mutationtest.MutationResultListenerFactory;
@@ -30,7 +30,7 @@ public class StrykerDashboardMutationResultListenerFactory implements MutationRe
             log.log(Level.INFO, "No module name detected");
         }
 
-        var codeSource = new CodeSource(args.data().getMutationClassPaths());
+        var codeSource = new DefaultCodeSource(args.data().getMutationClassPaths());
 
         return new StrykerDashboardMutationResultListener(
                 codeSource,
