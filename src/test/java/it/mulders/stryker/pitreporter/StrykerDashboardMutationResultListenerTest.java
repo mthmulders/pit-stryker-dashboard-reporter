@@ -10,6 +10,7 @@ import org.pitest.classinfo.ClassName;
 import org.pitest.classpath.CodeSource;
 import org.pitest.classpath.ClassFilter;
 import org.pitest.classpath.ClassPath;
+import org.pitest.classpath.DefaultCodeSource;
 import org.pitest.classpath.PathFilter;
 import org.pitest.classpath.ProjectClassPaths;
 import org.pitest.elements.utils.JsonParser;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class StrykerDashboardMutationResultListenerTest implements WithAssertions {
-    private final CodeSource codeSource = new CodeSource(
+    private final CodeSource codeSource = new DefaultCodeSource(
             new ProjectClassPaths(
                     new ClassPath(),
                     new ClassFilter(x -> true, x -> true),
