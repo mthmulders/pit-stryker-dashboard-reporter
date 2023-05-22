@@ -81,6 +81,14 @@ Note that this will also log the last three characters of your Stryker Dashboard
    This will ensure the mutation testing results of the various Gradle modules will not mix up in the report.
    You **should not** do this if you have a single-module Gradle project!
 
+## Versions
+In the table below you will find which version of this reporter you can use for a given version of Pitest.
+
+| Pitest version   | Reporter version |
+|------------------|------------------|
+| 1.14.0 and lower | v0.1.5           |
+| 1.14.0 and up    | v0.2.0 or higher |
+
 ## License
 This project is licensed under the MIT license.
 See the [LICENSE](./LICENSE) file for the full text of the license.
