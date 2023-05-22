@@ -5,6 +5,7 @@ import it.mulders.stryker.pitreporter.dashboard.client.StrykerDashboardClient;
 import it.mulders.stryker.pitreporter.environment.EnvironmentFactory;
 
 import org.pitest.classpath.CodeSource;
+import org.pitest.coverage.ClassLines;
 import org.pitest.elements.models.MutationTestSummaryData;
 import org.pitest.elements.models.PackageSummaryMap;
 import org.pitest.elements.utils.JsonParser;
@@ -16,10 +17,10 @@ import org.pitest.util.PitError;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Listener for {@link ClassMutationResults mutation results} emitted by PIT.
@@ -82,9 +83,12 @@ public class StrykerDashboardMutationResultListener implements MutationResultLis
         var fileName = classMutationResults.getFileName();
         var mutations = classMutationResults.getMutations();
         var className = classMutationResults.getMutatedClass();
-        var classInfo = codeSource.getClassInfo(Collections.singleton(className));
+        var classLines = codeSource.codeTrees()
+                .filter(classTree -> className.equals(classTree.name()))
+                .map(ClassLines::fromTree)
+                .collect(Collectors.toList());
 
-        return new MutationTestSummaryData(fileName, mutations, classInfo);
+        return new MutationTestSummaryData(fileName, mutations, classLines);
     }
 
     /**

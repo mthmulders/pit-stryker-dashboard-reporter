@@ -60,7 +60,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
     @Test
     void should_collect_package_info() {
         // Arrange
-        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, Collections.emptyList(), Collections.emptyList());
         var mutation = new MutationResult(mutationDetails, mstp);
         var cmr = new ClassMutationResults(Collections.singleton(mutation));
 
@@ -82,7 +82,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
     @Test
     void should_upload_result() {
         // Arrange
-        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, Collections.emptyList(), Collections.emptyList());
         var mutation = new MutationResult(mutationDetails, mstp);
         var cmr = new ClassMutationResults(Collections.singleton(mutation));
 
@@ -101,7 +101,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
     @Test
     void should_fail_when_upload_fails() {
         // Arrange
-        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, null, null);
+        var mstp = new MutationStatusTestPair(1, DetectionStatus.KILLED, Collections.emptyList(), Collections.emptyList());
         var mutation = new MutationResult(mutationDetails, mstp);
         var cmr = new ClassMutationResults(Collections.singleton(mutation));
         var error = "Oh noes, an error";
