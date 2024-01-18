@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.1
         with:
           # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
 
       - name: Set up cache for ~./m2/repository
-        uses: actions/cache@v3
+        uses: actions/cache@v3.3.3
         with:
           path: ~/.m2/repository
           key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}

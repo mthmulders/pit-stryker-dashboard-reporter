@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
 
       - name: Set up JDK
         uses: actions/setup-java@v4.0.0
@@ -22,7 +22,7 @@ jobs:
           check-latest: true
 
       - name: Set up cache for ~./m2/repository
-        uses: actions/cache@v3
+        uses: actions/cache@v3.3.3
         with:
           path: ~/.m2/repository
           key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}
