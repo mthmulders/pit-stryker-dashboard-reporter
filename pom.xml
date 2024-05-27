@@ -18,7 +18,7 @@
         <sonar.organization>mthmulders-github</sonar.organization>
         <sonar.projectKey>mthmulders_pit-stryker-dashboard-reporter</sonar.projectKey>
 
-        <assert-j.version>3.25.3</assert-j.version>
+        <assert-j.version>3.26.0</assert-j.version>
         <jackson-jr.version>2.17.1</jackson-jr.version>
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
         <wiremock.version>2.35.2</wiremock.version>
