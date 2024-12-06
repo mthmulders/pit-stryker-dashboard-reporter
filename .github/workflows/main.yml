@@ -22,7 +22,7 @@ jobs:
           check-latest: true
 
       - name: Set up cache for ~./m2/repository
-        uses: actions/cache@v4.1.2
+        uses: actions/cache@v4.2.0
         with:
           path: ~/.m2/repository
           key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}
