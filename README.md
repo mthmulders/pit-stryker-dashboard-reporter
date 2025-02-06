@@ -84,10 +84,11 @@ Note that this will also log the last three characters of your Stryker Dashboard
 ## Versions
 In the table below you will find which version of this reporter you can use for a given version of Pitest.
 
-| Pitest version   | Reporter version |
-|------------------|------------------|
-| 1.14.0 and lower | v0.1.5           |
-| 1.14.0 and up    | v0.2.1 or higher |
+| Pitest version     | Reporter version |
+|--------------------|------------------|
+| 1.14.0 and lower   | v0.1.5           |
+| 1.14.0 till 1.18.0 | v0.2.1           |
+| 1.18.0 and up      | (to be released) |
 
 ## License
 This project is licensed under the MIT license.
