@@ -34,7 +34,7 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
     void should_create_listener() {
         // arrange
         var reportOptions = new ReportOptions();
-        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions, Collections.emptyList());
 
         // act
         var listener = factory.getListener(new Properties(), args);
@@ -51,7 +51,7 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
         props.put(STRYKER_MODULE_NAME_PROPERTY, "example-1");
         var reportOptions = new ReportOptions();
 
-        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions, Collections.emptyList());
 
         // act
         var listener = factory.getListener(props, args);
@@ -66,8 +66,12 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
         // arrange
         var props = new Properties();
         var reportOptions = new ReportOptions();
+        reportOptions.setClassPathElements(Collections.singleton("target/test-classes"));
+        reportOptions.setTargetTests(Collections.singleton(
+                className -> true // Include all classes for simplicity
+        ));
 
-        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions);
+        var args = new ListenerArguments(null, null, null, null, System.currentTimeMillis(), false, reportOptions, Collections.emptyList());
 
         // act
         var listener = factory.getListener(props, args);
@@ -79,9 +83,7 @@ class StrykerDashboardMutationResultListenerFactoryTest implements WithAssertion
                 .satisfies(codeSource -> {
                     assertThat(codeSource.getClassPath()).isNotNull();
                     var ownClassName = ClassName.fromClass(getClass());
-                    assertThat(codeSource.getClassInfo(Collections.singleton(ownClassName)))
-                            .isNotNull()
-                            .isNotEmpty();
+                    assertThat(codeSource.getAllClassAndTestNames()).contains(ownClassName);
                 });
     }
 }
