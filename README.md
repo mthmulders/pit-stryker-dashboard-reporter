@@ -88,7 +88,7 @@ In the table below you will find which version of this reporter you can use for 
 |--------------------|------------------|
 | 1.14.0 and lower   | v0.1.5           |
 | 1.14.0 till 1.18.0 | v0.2.1           |
-| 1.18.0 and up      | (to be released) |
+| 1.18.0 and up      | v0.3.0           |
 
 ## License
 This project is licensed under the MIT license.
