@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>it.mulders.stryker</groupId>
     <artifactId>pit-dashboard-reporter</artifactId>
-    <version>0.3.0</version>
+    <version>0.3.1-SNAPSHOT</version>
 
     <name>PIT Stryker Dashboard reporter</name>
     <url>https://github.com/mthmulders/pit-stryker-dashboard-reporter</url>
@@ -49,7 +49,7 @@
         <url>https://github.com/mthmulders/pit-stryker-dashboard-reporter</url>
         <connection>scm:git:https://github.com/mthmulders/pit-stryker-dashboard-reporter.git</connection>
         <developerConnection>scm:git:git@github.com:mthmulders/pit-stryker-dashboard-reporter.git</developerConnection>
-        <tag>v0.3.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <licenses>
