@@ -29,7 +29,7 @@ Note that this will also log the last three characters of your Stryker Dashboard
     <dependency>
        <groupId>it.mulders.stryker</groupId>
        <artifactId>pit-dashboard-reporter</artifactId>
-       <version>0.3.1</version>
+       <version>0.3.2</version>
     </dependency>
     ```
 3. Configure PIT to use the new output format:
@@ -55,7 +55,7 @@ Note that this will also log the last three characters of your Stryker Dashboard
 1. Find the place in your **build.gradle** where you declare your dependencies.
 2. Add a dependency to this plugin declaration:
     ```groovy
-   pitest it.mulders.stryker:pit-dashboard-reporter:0.3.1
+   pitest it.mulders.stryker:pit-dashboard-reporter:0.3.2
     ```
 3. Configure PIT to use the new output format:
     ```groovy
