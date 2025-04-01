@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up cache for ~./m2/repository
-        uses: actions/cache@v4.2.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.m2/repository
           key: pit-stryker-dashboard-reporter-${{ hashFiles('**/pom.xml') }}
