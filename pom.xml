@@ -170,6 +170,9 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
                     <version>3.1.4</version>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -243,6 +246,18 @@
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.4.2</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.sonatype.central</groupId>
+                    <artifactId>central-publishing-maven-plugin</artifactId>
+                    <version>0.7.0</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <excludeArtifacts>
+                            <excludeArtifact>plugin-tests</excludeArtifact>
+                        </excludeArtifacts>
+                        <publishingServerId>sonatype-central-portal</publishingServerId>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -288,6 +303,10 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonatype.central</groupId>
+                <artifactId>central-publishing-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
