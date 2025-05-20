@@ -252,9 +252,8 @@
                     <version>0.7.0</version>
                     <extensions>true</extensions>
                     <configuration>
-                        <excludeArtifacts>
-                            <excludeArtifact>plugin-tests</excludeArtifact>
-                        </excludeArtifacts>
+                        <autoPublish>true</autoPublish>
+                        <deploymentName>${project.name} ${project.version}</deploymentName>
                         <publishingServerId>sonatype-central-portal</publishingServerId>
                     </configuration>
                 </plugin>
