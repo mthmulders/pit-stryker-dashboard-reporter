@@ -19,9 +19,9 @@
         <sonar.projectKey>mthmulders_pit-stryker-dashboard-reporter</sonar.projectKey>
 
         <assert-j.version>3.27.3</assert-j.version>
-        <jackson-jr.version>2.19.1</jackson-jr.version>
-        <junit-jupiter.version>5.13.3</junit-jupiter.version>
+        <jackson-jr.version>2.19.2</jackson-jr.version>
         <pitest.version>1.20.1</pitest.version>
+        <junit-jupiter.version>5.13.4</junit-jupiter.version>
         <wiremock.version>2.35.2</wiremock.version>
     </properties>
 
@@ -239,7 +239,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>3.2.7</version>
+                    <version>3.2.8</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
