@@ -16,4 +16,4 @@ updates:
     - dependency-name: "org.pitest:pitest-entry"
     # JUnit 6 requires Java 17
     - dependency-name: "org.junit:junit-bom"
-      versions: "[ 6.0.0, )"
+      versions: [ "6.0.0,)" ]
