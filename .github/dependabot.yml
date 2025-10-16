@@ -14,3 +14,6 @@ updates:
   open-pull-requests-limit: 10
   ignore:
     - dependency-name: "org.pitest:pitest-entry"
+    # JUnit 6 requires Java 17
+    - dependency-name: "org.junit:junit-bom"
+      versions: "[ 6.0.0, )"
