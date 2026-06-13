@@ -105,7 +105,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
         var mutation = new MutationResult(mutationDetails, mstp);
         var cmr = new ClassMutationResults(Collections.singleton(mutation));
         var error = "Oh noes, an error";
-        var listener = new StrykerDashboardMutationResultListener(
+        var l = new StrykerDashboardMutationResultListener(
                 codeSource,
                 null,
                 jsonParser,
@@ -118,10 +118,10 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
         );
 
         // Act
-        listener.handleMutationResult(cmr);
+        l.handleMutationResult(cmr);
 
         // Assert
-        assertThatThrownBy(listener::runEnd)
+        assertThatThrownBy(l::runEnd)
                 .isInstanceOf(PitError.class)
                 .cause()
                 .hasMessageContaining(error);
