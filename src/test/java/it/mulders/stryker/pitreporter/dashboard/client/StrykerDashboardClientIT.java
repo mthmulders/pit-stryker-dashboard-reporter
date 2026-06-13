@@ -80,6 +80,7 @@ class StrykerDashboardClientIT implements WithAssertions {
 
     @Nested
     class ResponseHandlingIT {
+        @SuppressWarnings("java:S2699") // The assertion is implied by the fact that no error is thrown
         @Test
         void should_handle_200_response(final WireMockRuntimeInfo wmRuntimeInfo) throws StrykerDashboardClientException {
             // Arrange
