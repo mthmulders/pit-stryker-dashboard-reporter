@@ -121,7 +121,7 @@ class StrykerDashboardMutationResultListenerTest implements WithAssertions {
         listener.handleMutationResult(cmr);
 
         // Assert
-        assertThatThrownBy(() -> listener.runEnd())
+        assertThatThrownBy(listener::runEnd)
                 .isInstanceOf(PitError.class)
                 .cause()
                 .hasMessageContaining(error);
