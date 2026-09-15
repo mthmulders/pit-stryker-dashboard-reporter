@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-java@v5.6.0
         with:
           java-version: 11
-          distribution: 'adopt'
+          distribution: 'temurin'
           check-latest: true
 
       - name: Set up cache for ~./m2/repository

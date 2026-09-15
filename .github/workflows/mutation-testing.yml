@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-java@v5.6.0
         with:
           java-version: 11
-          distribution: 'adopt'
+          distribution: 'temurin'
           cache: maven
 
       - name: Install reporter
